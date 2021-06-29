@@ -24,11 +24,11 @@ Note:
 
 ## web 页面显示的基础流程
 
-- 加载 -> 解析 -> 渲染
+加载 -> 解析 -> 渲染
 
-- 一边加载，一边解析，一边渲染 <!-- .element: class="fragment fade-up" -->
+一边加载，一边解析，一边渲染 <!-- .element: class="fragment fade-up" -->
 
-- 性能消耗要比原生开发增加 N 个数量级 <!-- .element: class="fragment fade-up" -->
+性能消耗要比原生开发增加 N 个数量级 <!-- .element: class="fragment fade-up" -->
 
 Note:
 1、浏览器控件加载 HTML5 页面的 HTML 主文档
@@ -70,24 +70,134 @@ Note:
 - Skia 保证了同一套代码调用在 Android 和 iOS 平台上的渲染效果是完全一致的
 
 
+## Flutter 架构
+
+![Flutter架构](https://cdn.jsdelivr.net/gh/floiges/pics/img/Flutter-arch.webp)
+
+Note:
+- Embedder 操作系统适配层
+
+- Engine 层主要包含 Skia、Dart 和 Text，实现了 Flutter 的渲染引擎、文字排版、事件处理和 Dart 运行时等功能
+
+- Framework 层则是一个用 Dart 实现的 UI SDK，包含了动画、图形绘制和手势识别等功能
+
+
 ## 绘制流程
 
 ![Flutter绘制](https://cdn.jsdelivr.net/gh/floiges/pics/img/flutter-render.webp)
+
 
 
 ## Dart
 
 - JIT 开发周期端，调试方便 (支持有状态的热重载)
 - AOT 本地代码的执行更高效，代码性能和用户体验也更卓越
+- 类型安全，所有类型都是对象类型，都继承自顶层类型 Object
+- num、bool、String、List、Map
 
 Note:
 - 为什么不选择 JS？Dart 语言组在隔壁，好沟通
+- 继承、接口、mixin
 
 
-## Flutter 架构
 
-![Flutter架构](https://cdn.jsdelivr.net/gh/floiges/pics/img/Flutter-arch.webp)
+## 类
 
+```
+class Point {
+  num x, y;
+  static num factor = 0;
+  //语法糖，等同于在函数体内：this.x = x;this.y = y;
+  Point(this.x,this.y);
+  void printInfo() => print('($x, $y)');
+  static void printZValue() => print('$factor');
+}
+
+var p = new Point(100,200); // new 关键字可以省略
+p.printInfo();  // 输出(100, 200);
+Point.factor = 10;
+Point.printZValue(); // 输出10
+```
+
+
+
+## Dart 不支持多重继承
+
+```
+class Coordinate with Point {
+}
+
+var yyy = Coordinate();
+print (yyy is Point); //true
+print(yyy is Coordinate); //true
+```
+
+
+
+## 可选命名参数、可忽略参数
+
+```
+//要达到可选命名参数的用法，那就在定义函数的时候给参数加上 {}
+//定义可选命名参数时增加默认值
+void enableFlags({bool bold = true, bool hidden = false}) => print("$bold ,$hidden");
+//可忽略的参数在函数定义时用[]符号指定
+//定义可忽略参数时增加默认值
+void enable2Flags(bool bold, [bool hidden = false]) => print("$bold ,$hidden");
+//可选命名参数函数调用
+enableFlags(); //true, false
+//可忽略参数函数调用
+enable2Flags(true, false); //true, false
+enable2Flags(true); //true, false
+```
+
+
+
+## Future
+
+```
+Future<void> printOrderMessage() async {
+  try {
+    var order = await fetchUserOrder();
+    print('Awaiting user order...');
+    print(order);
+  } catch (err) {
+    print('Caught error: $err');
+  }
+}
+
+Future<String> fetchUserOrder() {
+  // Imagine that this function is more complex.
+  var str = Future.delayed(
+      Duration(seconds: 4),
+      () => throw 'Cannot locate user order');
+  return str;
+}
+
+Future<void> main() async {
+  await printOrderMessage();
+}
+```
+
+
+
+## 一切都是 Widget
+
+Widget，Element 与 RenderObject
+
+Note:
+- Widget 不可变，是一份配置数据，可频繁删除、重建
+
+- Element，类似 Virtual DOM，可以只将真正需要修改的部分同步到真实的 RenderObject 树中，最大程度降低对真实渲染视图的修改，提高渲染效率，而不是销毁整个渲染视图树重建
+
+- RenderObject 负责渲染
+
+- Flutter 通过控件树（Widget 树）中的每个控件（Widget）创建不同类型的渲染对象，组成渲染对象树
+
+- JSX->虚拟DOM->浏览器DOM
+
+
+
+## 例子
 
 
 ## 如何抉择
