@@ -70,6 +70,24 @@ Note:
 - Skia 保证了同一套代码调用在 Android 和 iOS 平台上的渲染效果是完全一致的
 
 
+
+##
+
+![distinct](https://cdn.jsdelivr.net/gh/floiges/pics/img/web-distinct.webp)
+
+Note:
+- Hybrid：跨平台开发历史最成功的例子
+- RN/Flutter 两个框架都已达到了大面积商业应用的标准。
+- 综合成熟度和生态，目前俩看 React Native 略胜 Flutter。
+- 因此，如果是中短期项目的话，建议使用 React Native。
+- 但作为技术选型，我们要看得更远一些。Flutter 的设计理念比较先进，解决方案也相对彻底，在渲染能力的一致性以及性能上，和 React Native 相比优势非常明显
+- 状态管理
+- 函数式编程
+- Flex 布局
+- 核心
+
+
+
 ## Flutter 架构
 
 ![Flutter架构](https://cdn.jsdelivr.net/gh/floiges/pics/img/Flutter-arch.webp)
@@ -90,10 +108,13 @@ Note:
 
 ## Dart
 
-- JIT 开发周期端，调试方便 (支持有状态的热重载)
-- AOT 本地代码的执行更高效，代码性能和用户体验也更卓越
-- 类型安全，所有类型都是对象类型，都继承自顶层类型 Object
-- num、bool、String、List、Map
+JIT 开发周期短，调试方便 (支持有状态的热重载)
+
+AOT 本地代码的执行更高效，代码性能和用户体验也更卓越 <!-- .element: class="fragment fade-up" -->
+
+类型安全，所有类型都是对象类型，都继承自顶层类型 Object <!-- .element: class="fragment fade-up" -->
+
+num、bool、String、List、Map <!-- .element: class="fragment fade-up" -->
 
 Note:
 - 为什么不选择 JS？Dart 语言组在隔壁，好沟通
@@ -124,6 +145,7 @@ Point.printZValue(); // 输出10
 ## Dart 不支持多重继承
 
 ```
+// Mixin
 class Coordinate with Point {
 }
 
@@ -182,14 +204,31 @@ Future<void> main() async {
 
 ## 一切都是 Widget
 
-Widget，Element 与 RenderObject
+- VC、Activity、Layout 等都是 Widget
+
+- 不可变
+
+- 视图的配置信息
+
+- [Widget 列表](https://flutter.dev/docs/development/ui/widgets)
 
 Note:
 - Widget 不可变，是一份配置数据，可频繁删除、重建
 
-- Element，类似 Virtual DOM，可以只将真正需要修改的部分同步到真实的 RenderObject 树中，最大程度降低对真实渲染视图的修改，提高渲染效率，而不是销毁整个渲染视图树重建
 
-- RenderObject 负责渲染
+
+## 三剑客
+
+![flutter三剑客](https://cdn.jsdelivr.net/gh/floiges/pics/img/flutter-three-sword.webp)
+
+- Widget： Vue -> template
+
+- Element：  Virtual DOM
+
+- RenderObject： 浏览器 DOM
+
+Note:
+- Element，类似 Virtual DOM，承载了视图构建的上下文数据，可以只将真正需要修改的部分同步到真实的 RenderObject 树中，最大程度降低对真实渲染视图的修改，提高渲染效率，而不是销毁整个渲染视图树重建
 
 - Flutter 通过控件树（Widget 树）中的每个控件（Widget）创建不同类型的渲染对象，组成渲染对象树
 
@@ -197,21 +236,15 @@ Note:
 
 
 
+##
+
+![flutter-row-example](https://cdn.jsdelivr.net/gh/floiges/pics/img/flutter-row-example.webp)
+
+![flutter-row-tree-example](https://cdn.jsdelivr.net/gh/floiges/pics/img/flutter-row-tree-example.webp)
+
+
+
 ## 例子
 
 
-## 如何抉择
-
-![distinct](https://cdn.jsdelivr.net/gh/floiges/pics/img/web-distinct.webp)
-
-Note:
-- Hybrid：跨平台开发历史最成功的例子
-- RN/Flutter 两个框架都已达到了大面积商业应用的标准。
-- 综合成熟度和生态，目前俩看 React Native 略胜 Flutter。
-- 因此，如果是中短期项目的话，建议使用 React Native。
-- 但作为技术选型，我们要看得更远一些。Flutter 的设计理念比较先进，解决方案也相对彻底，在渲染能力的一致性以及性能上，和 React Native 相比优势非常明显
-- 状态管理
-- 函数式编程
-- Flex 布局
-- 核心
 
